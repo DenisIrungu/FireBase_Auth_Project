@@ -9,8 +9,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  final user= FirebaseAuth.instance.currentUser!;
-
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +19,11 @@ class _HomepageState extends State<Homepage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('LOGGED IN as:${user.email!}'),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             GestureDetector(
-              onTap:() {
+              onTap: () {
                 FirebaseAuth.instance.signOut();
               },
               child: Container(
@@ -30,10 +31,13 @@ class _HomepageState extends State<Homepage> {
                   borderRadius: BorderRadius.circular(12),
                   color: Colors.deepPurple,
                 ),
-              child: const Padding(
-              padding: EdgeInsets.all(10.0),
-                child: Text('Sign Out', style: TextStyle(color: Colors.white),),
-              ),
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    'Sign Out',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
             )
             //  MaterialButton(
@@ -42,11 +46,10 @@ class _HomepageState extends State<Homepage> {
             //   },
             //   color: Colors.deepPurple,
             //   child: const Text('Sign Out'),
-              
+
             //   ),
           ],
         ),
-      
       ),
     );
   }
