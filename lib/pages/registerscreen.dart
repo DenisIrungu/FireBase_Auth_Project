@@ -1,5 +1,6 @@
 import 'package:auth_project/constats/colors.dart';
 import 'package:auth_project/constats/textfields.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final ageController = TextEditingController();
 
   Future signUp() async {
     // if(passwordConfirmed()) {
@@ -48,6 +52,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
         const SnackBar(content: Text('Passwords do not match')),
       );
     }
+    addUserData(
+      firstNameController.text.trim(), 
+      lastNameController.text.trim(), 
+      int.parse(ageController.text.trim()),
+      emailController.text.trim()
+    );
+   }
+   Future addUserData(String firstName, String lastName, int age, String email) async{
+    await FirebaseFirestore.instance.collection('users').add({
+      'First Name': firstName,
+      'Last Name': lastName,
+      'Age': age,
+      'Email': email
+    });
    }
 
   bool passwordConfirmed() {
@@ -60,6 +78,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    ageController.dispose();
     super.dispose();
   }
 
@@ -78,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   size: 100,
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 Text(
                   'HELLO THERE',
@@ -86,39 +107,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       fontSize: 52, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 const Text(
                   'Register below with your details',
                   style: TextStyle(fontSize: 20),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
+                MyTextFields(
+                  controller: firstNameController, 
+                  hintText: 'First Name', 
+                  obscureText: false),
+                SizedBox(height: 15,),
+                MyTextFields(
+                  controller: lastNameController, 
+                  hintText: 'Last Name', 
+                  obscureText: false),
+                SizedBox(height: 15,),
+                MyTextFields(
+                  controller: ageController, 
+                  hintText: 'Age', 
+                  obscureText: false),
+                SizedBox(height: 15,),
                 MyTextFields(
                   hintText: 'Email',
                   obscureText: false,
                   controller: emailController,
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 MyTextFields(
                     controller: passwordController,
                     hintText: 'PassWord',
                     obscureText: true),
                 const SizedBox(
-                  height: 20,
-                ),
-                const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 MyTextFields(
                     controller: confirmPasswordController,
                     hintText: 'Confirm Password',
                     obscureText: true),
                 const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -138,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

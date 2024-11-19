@@ -1,5 +1,6 @@
 //import 'package:auth_project/home_screen.dart';
 import 'package:auth_project/Auth/main_page.dart';
+import 'package:auth_project/pages/forgetpassword.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -15,9 +16,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      home: const MainPage(),
+      routes: {
+        '/forgetpassword': (context) => const ForgetPassword()
+      },
     );
   }
 }
