@@ -17,9 +17,34 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
 
   Future tapToSign() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
-        password: passwordController.text.trim());
+        password: passwordController.text.trim(),
+      );
+      // Navigate to the next screen or provide success feedback
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sign in successful!')),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No User founf for that email';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password, please enter the correct password';
+      } else {
+        errorMessage = 'An error occured. Please try again';
+      }
+      // Show the error to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
+    } catch (e) {
+      // Catch any other errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An unexpected error occurred: $e')),
+      );
+    }
   }
 
   @override
@@ -81,12 +106,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      onTap: (){
-                        Navigator.pushNamed(context, '/forgetpassword');
-                      },
-                      child: Text('Forgot Password?',
-                      style: TextStyle(color: Colors.blue[900], fontWeight: FontWeight.bold)
-                      )),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/forgetpassword');
+                        },
+                        child: Text('Forgot Password?',
+                            style: TextStyle(
+                                color: Colors.blue[900],
+                                fontWeight: FontWeight.bold))),
                   ],
                 ),
               ),

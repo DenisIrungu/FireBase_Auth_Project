@@ -59,6 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       emailController.text.trim()
     );
    }
+   //Creating new user detail
    Future addUserData(String firstName, String lastName, int age, String email) async{
     await FirebaseFirestore.instance.collection('users').add({
       'First Name': firstName,
